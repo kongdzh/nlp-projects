@@ -78,8 +78,8 @@ def build_vocab(items, sort=True, min_count=0, lower=False):
 
 
 if __name__ == '__main__':
-    lines = read_data('{}/utils/datasets/train_set.seg_x.txt'.format(BASE_DIR),
-                      '{}/utils/datasets/train_set.seg_y.txt'.format(BASE_DIR),
-                      '{}/utils/datasets/test_set.seg_x.txt'.format(BASE_DIR))
+    lines = read_data('{}/datasets/train_set.seg_x.txt'.format(BASE_DIR),
+                      '{}/datasets/train_set.seg_y.txt'.format(BASE_DIR),
+                      '{}/datasets/test_set.seg_x.txt'.format(BASE_DIR))
     vocab, reverse_vocab = build_vocab(lines)
-    save_word_dict(vocab, '{}/utils/datasets/vocab.txt'.format(BASE_DIR))
+    save_word_dict(vocab, '{}/datasets/vocab.txt'.format(BASE_DIR))

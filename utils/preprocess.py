@@ -3,7 +3,7 @@ import pandas as pd
 import re
 from jieba import posseg
 import jieba
-from utils.tokenizer import segment
+from tokenizer import segment
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,8 +20,8 @@ def read_stopwords(path):
     return lines
 
 
-def remove_words(words_list):
-    words_list = [word for word in words_list if word not in REMOVE_WORDS]
+def remove_words(words_list, rm_words):
+    words_list = [word for word in words_list if word not in rm_words]
     return words_list
 
 
@@ -46,22 +46,27 @@ def parse_data(train_path, test_path):
     test_x = test_df.Question.str.cat(test_df.Dialogue)
     test_x = test_x.apply(preprocess_sentence)
     print('test_x is ', len(test_x))
-    test_y = []
-    train_x.to_csv('{}/utils/datasets/train_set.seg_x.txt'.format(BASE_DIR), index=None, header=False)
-    train_y.to_csv('{}/utils/datasets/train_set.seg_y.txt'.format(BASE_DIR), index=None, header=False)
-    test_x.to_csv('{}/utils/datasets/test_set.seg_x.txt'.format(BASE_DIR), index=None, header=False)
+    #test_y = []
+    train_x.to_csv('{}/datasets/train_set.seg_x.txt'.format(BASE_DIR), index=None, header=False)
+    train_y.to_csv('{}/datasets/train_set.seg_y.txt'.format(BASE_DIR), index=None, header=False)
+    test_x.to_csv('{}/datasets/test_set.seg_x.txt'.format(BASE_DIR), index=None, header=False)
 
 
 def preprocess_sentence(sentence):
     seg_list = segment(sentence.strip(), cut_type='word')
-    seg_list = remove_words(seg_list)
+    seg_list = remove_words(seg_list, REMOVE_WORDS)
+    # filter stopwords
+    stopwords_path = '{}/datasets/stopwords.txt'.format(BASE_DIR)
+    stopwords = read_stopwords(stopwords_path)
+    seg_list = remove_words(seg_list, stopwords)
+
     seg_line = ' '.join(seg_list)
     return seg_line
 
 
 if __name__ == '__main__':
     # 需要更换成自己数据的存储地址
-    parse_data('{}/utils/datasets/AutoMaster_TrainSet.csv'.format(BASE_DIR),
-               '{}/utils/datasets/AutoMaster_TestSet.csv'.format(BASE_DIR))
+    parse_data('{}/datasets/AutoMaster_TrainSet.csv'.format(BASE_DIR),
+               '{}/datasets/AutoMaster_TestSet.csv'.format(BASE_DIR))
 
 

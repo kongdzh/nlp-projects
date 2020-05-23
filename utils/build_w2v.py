@@ -4,7 +4,7 @@ from gensim.models.keyedvectors import KeyedVectors
 from data_utils import dump_pkl
 import os, sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(BASE_DIR + '/utils')
+# sys.path.append(BASE_DIR + '')
 
 def read_lines(path, col_sep=None):
     lines = []
@@ -47,7 +47,7 @@ def build(train_x_seg_path, train_y_seg_path, test_seg_path, out_path=None, sent
     your code
     w2v = （one line）
     """
-    w2v = Word2Vec(sentences=[line.split() for line in sentences], sg=1, size=256)
+    w2v = Word2Vec(sentences=[line.split() for line in sentences], sg=1, size=256, min_count=10)
     w2v.wv.save_word2vec_format(w2v_bin_path, binary=True)
     print("save %s ok." % w2v_bin_path)
     # test
@@ -62,9 +62,9 @@ def build(train_x_seg_path, train_y_seg_path, test_seg_path, out_path=None, sent
 
 
 if __name__ == '__main__':
-    build('{}/utils/datasets/train_set.seg_x.txt'.format(BASE_DIR),
-          '{}/utils/datasets/train_set.seg_y.txt'.format(BASE_DIR),
-          '{}/utils/datasets/test_set.seg_x.txt'.format(BASE_DIR),
-          out_path='{}/utils/datasets/word2vec.txt'.format(BASE_DIR),
-          sentence_path='{}/utils/datasets/sentences.txt'.format(BASE_DIR))
+    build('{}/datasets/train_set.seg_x.txt'.format(BASE_DIR),
+          '{}/datasets/train_set.seg_y.txt'.format(BASE_DIR),
+          '{}/datasets/test_set.seg_x.txt'.format(BASE_DIR),
+          out_path='{}/datasets/word2vec.txt'.format(BASE_DIR),
+          sentence_path='{}/datasets/sentences.txt'.format(BASE_DIR))
 
