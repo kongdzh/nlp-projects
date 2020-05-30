@@ -32,10 +32,10 @@ def train_model(model, dataset, params, ckpt, ckpt_manager):
             enc_output, enc_hidden = model.call_encoder(enc_inp)
             dec_hidden = enc_hidden
             # start index
-            pred, _ = model(enc_output,  # shape=(3, 200, 256)
-                            dec_inp,  # shape=(3, 256)
-                            dec_hidden,  # shape=(3, 200)
-                            dec_tar)  # shape=(3, 50) 
+            pred, _ = model(enc_output,  # shape=(256, 200, 256)
+                            dec_inp,  # shape=(256, 40)
+                            dec_hidden,  # shape=(256, 200)
+                            dec_tar)  # shape=(256, 40) 
             loss = loss_function(dec_tar, pred)
                         
         # variables = model.trainable_variables
@@ -59,7 +59,7 @@ def train_model(model, dataset, params, ckpt, ckpt_manager):
            
             step += 1
             total_loss += loss
-            if step % 100 == 0:
+            if step % 10 == 0 or step == 0:
                 print('Epoch {} Batch {} Loss {:.4f}'.format(epoch + 1, step, total_loss / step))
                 # print('Epoch {} Batch {} Loss {:.4f}'.format(epoch + 1, step, loss.numpy()))
 
